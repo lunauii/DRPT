@@ -1,0 +1,159 @@
+[gd_scene load_steps=7 format=3 uid="uid://otfjael3wt0i"]
+
+[ext_resource type="Script" path="res://src/scripts/discrp_startup.gd" id="1_e5b2k"]
+[ext_resource type="Texture2D" uid="uid://oyxcmm5fg1k2" path="res://src/assets/pencil128x.png" id="2_44o3r"]
+[ext_resource type="Theme" uid="uid://c4xf8wo8x6trq" path="res://src/themes/no_box.tres" id="2_hosa2"]
+[ext_resource type="StyleBox" uid="uid://b8t5x302xiym2" path="res://src/themes/no_focus.tres" id="2_s8ggl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l1u1n"]
+content_margin_right = 5.0
+bg_color = Color(0.114503, 0.119221, 0.158317, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lxvyx"]
+bg_color = Color(0.0697905, 0.0659253, 0.0843726, 1)
+
+[node name="StudyPresence" type="Node" groups=["Persist"]]
+script = ExtResource("1_e5b2k")
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -1
+
+[node name="PanelContainer2" type="PanelContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_l1u1n")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("2_44o3r")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "DPRT"
+
+[node name="MinimizeButton" type="Button" parent="UI/VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme = ExtResource("2_hosa2")
+text = "[ _ ]
+"
+
+[node name="CloseButton" type="Button" parent="UI/VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme = ExtResource("2_hosa2")
+text = "[ X ]"
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lxvyx")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Rich Presence Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DetailsBox" type="HBoxContainer" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DetailsBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Details (1st Line)
+"
+
+[node name="DetailEdit" type="LineEdit" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DetailsBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/focus = ExtResource("2_s8ggl")
+placeholder_text = "  Studying for CST"
+max_length = 30
+caret_blink = true
+
+[node name="StateBox" type="HBoxContainer" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 37
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/StateBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "State (2nd Line) 
+"
+
+[node name="StateEdit" type="LineEdit" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/StateBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/focus = ExtResource("2_s8ggl")
+placeholder_text = "  COMP 1510 Chapter 1.1 - 1.8"
+max_length = 30
+caret_blink = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UI/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 15
+
+[node name="ChangeBox" type="Button" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 12
+theme_override_styles/focus = ExtResource("2_s8ggl")
+disabled = true
+text = "Save Changes"
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.408329, 0.408329, 0.408329, 1)
+theme_override_font_sizes/font_size = 9
+text = "Made with 🤍 by Lunaui  |  version 0.1"
+horizontal_alignment = 1
+
+[connection signal="gui_input" from="UI/VBoxContainer/PanelContainer2" to="." method="_on_box_bar_gui_input"]
+[connection signal="pressed" from="UI/VBoxContainer/PanelContainer2/HBoxContainer/MinimizeButton" to="." method="_on_minimize_button_pressed"]
+[connection signal="pressed" from="UI/VBoxContainer/PanelContainer2/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="text_changed" from="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DetailsBox/DetailEdit" to="." method="_on_details_edit_text_changed"]
+[connection signal="text_changed" from="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/StateBox/StateEdit" to="." method="_on_state_edit_text_changed"]
+[connection signal="pressed" from="UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer2/ChangeBox" to="." method="_on_change_button_pressed"]
