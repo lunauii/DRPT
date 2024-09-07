@@ -9,16 +9,13 @@ var moving : bool = false
 var mouse_start : Vector2i
 
 @onready var ui = $UI
-@onready var change_box = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Manual Override/MarginContainer/VBoxContainer2/ChangeBox"
-@onready var detail_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Manual Override/MarginContainer/VBoxContainer/DetailsBox/DetailEdit"
-@onready var state_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Manual Override/MarginContainer/VBoxContainer/StateBox/StateEdit"
+@onready var change_box = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer2/ChangeBox"
+@onready var detail_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/DetailsBox/DetailEdit"
+@onready var state_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/StateBox/StateEdit"
 
 func _ready():
 	DiscordRPC.app_id = 1281484844404183071 # Application ID
 	DiscordRPC.large_image = "pencil"
-	DiscordRPC.large_image_text = ":3"
-	#DiscordRPC.small_image = "boss" # Image key from "Art Assets"
-	#DiscordRPC.small_image_text = "Fighting the end boss! D:"
 
 	load_data()
 
