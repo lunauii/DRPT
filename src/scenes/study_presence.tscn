@@ -318,5 +318,7 @@ text = "+
 [connection signal="pressed" from="UI/VBoxContainer/PanelContainer2/HBoxContainer/MinimizeButton" to="." method="_on_minimize_button_pressed"]
 [connection signal="pressed" from="UI/VBoxContainer/PanelContainer2/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
 [connection signal="text_changed" from="UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/DetailsBox/DetailEdit" to="." method="_on_details_edit_text_changed"]
+[connection signal="text_submitted" from="UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/DetailsBox/DetailEdit" to="." method="_on_detail_edit_text_submitted"]
 [connection signal="text_changed" from="UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/StateBox/StateEdit" to="." method="_on_state_edit_text_changed"]
+[connection signal="text_submitted" from="UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/StateBox/StateEdit" to="." method="_on_state_edit_text_submitted"]
 [connection signal="pressed" from="UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer2/ChangeBox" to="." method="_on_change_button_pressed"]

@@ -4,6 +4,7 @@ var details : String
 var state : String
 var details_changed : bool
 var state_changed : bool
+var window_position : Vector2i
 
 var moving : bool = false
 var mouse_start : Vector2i
@@ -27,6 +28,7 @@ func _ready():
 		DiscordRPC.state = state
 		detail_edit.text = details
 		state_edit.text = state
+		get_window().position = window_position
 
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) # "02:46 elapsed"
 	# DiscordRPC.end_timestamp = int(Time.get_unix_time_from_system()) + 3600 # +1 hour in unix time / "01:00:00 remaining"
@@ -46,6 +48,14 @@ func _on_state_edit_text_changed(new_state: String) -> void:
 
 
 func _on_change_button_pressed() -> void:
+	save_changes()
+
+
+func enter_button() -> void:
+	save_changes()
+
+
+func save_changes() -> void:
 	DiscordRPC.details = details
 	DiscordRPC.state = state
 	change_box.disabled = true
@@ -53,11 +63,13 @@ func _on_change_button_pressed() -> void:
 	save_data()
 	DiscordRPC.refresh()
 
-func save():
+
+func save() -> Dictionary:
 	var save_dict = {
 		
 		"details" : details,
-		"state" : state
+		"state" : state,
+		"window_position" : window_position
 		
 	}
 	
@@ -89,13 +101,13 @@ func load_data():
 		
 		details = node_data["details"]
 		state = node_data["state"]
+		window_position = str_to_var("Vector2i" + node_data["window_position"])
 	
 		print(node_data)
 
 
 func _on_close_button_pressed() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-	get_tree().quit()
 
 
 func _on_minimize_button_pressed() -> void:
@@ -107,9 +119,24 @@ func _on_box_bar_gui_input(event: InputEvent) -> void:
 		if !moving:
 			mouse_start = get_viewport().get_mouse_position()
 		moving = event.is_pressed()
+		
 
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		load_data()
+		window_position = get_window().position
+		save_data()
+		get_tree().quit()
 
 func _process(_delta: float) -> void:
 	if moving:
 		var current_mouse := Vector2i(get_viewport().get_mouse_position())
 		get_window().position += current_mouse - mouse_start
+
+
+func _on_detail_edit_text_submitted(_new_text: String) -> void:
+	enter_button()
+
+
+func _on_state_edit_text_submitted(_new_text: String) -> void:
+	enter_button()
