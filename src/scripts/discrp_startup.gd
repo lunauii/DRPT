@@ -4,36 +4,53 @@ var details : String
 var state : String
 var details_changed : bool
 var state_changed : bool
+var window_position : Vector2i
+var screen_resolution : Vector2i
 
 var moving : bool = false
 var mouse_start : Vector2i
 
 @onready var ui = $UI
-@onready var change_box = $UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer2/ChangeBox
-@onready var detail_edit = $UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DetailsBox/DetailEdit
-@onready var state_edit = $UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/StateBox/StateEdit
+@onready var change_box = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer2/ChangeBox"
+@onready var detail_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/DetailsBox/DetailEdit"
+@onready var state_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/StateBox/StateEdit"
+@onready var resolution_menu = $UI/VBoxContainer/PanelContainer2/HBoxContainer/MenuButton
 
 func _ready():
 	DiscordRPC.app_id = 1281484844404183071 # Application ID
 	DiscordRPC.large_image = "pencil"
-	DiscordRPC.large_image_text = ":3"
-	#DiscordRPC.small_image = "boss" # Image key from "Art Assets"
-	#DiscordRPC.small_image_text = "Fighting the end boss! D:"
-	
+
+	load_data()
+
 	if not FileAccess.file_exists("user://prev_params.cfg"):
 		DiscordRPC.details = "Studying"
 		DiscordRPC.state = "Textbook Chapter 1"
 	else:
-		load_data()
 		DiscordRPC.details = details
 		DiscordRPC.state = state
 		detail_edit.text = details
 		state_edit.text = state
+		get_window().size = screen_resolution
+		get_window().position = window_position
 
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) # "02:46 elapsed"
 	# DiscordRPC.end_timestamp = int(Time.get_unix_time_from_system()) + 3600 # +1 hour in unix time / "01:00:00 remaining"
-
+	resolution_menu.get_popup().id_pressed.connect(_on_item_menu_pressed)
 	DiscordRPC.refresh() # Always refresh after changing the values!
+
+func _on_item_menu_pressed(id: int):
+	if id == 0:
+	# 480x360
+		get_window().size = Vector2i(480, 360)
+
+	elif id == 1:
+	# 720x540
+		get_window().size = Vector2i(720, 540)
+
+	elif id == 2:
+	# 960x720
+		get_window().size = Vector2i(960, 720)
+	
 
 func _on_details_edit_text_changed(new_details: String) -> void:
 	details = new_details
@@ -48,6 +65,14 @@ func _on_state_edit_text_changed(new_state: String) -> void:
 
 
 func _on_change_button_pressed() -> void:
+	save_changes()
+
+
+func enter_button() -> void:
+	save_changes()
+
+
+func save_changes() -> void:
 	DiscordRPC.details = details
 	DiscordRPC.state = state
 	change_box.disabled = true
@@ -55,11 +80,14 @@ func _on_change_button_pressed() -> void:
 	save_data()
 	DiscordRPC.refresh()
 
-func save():
+
+func save() -> Dictionary:
 	var save_dict = {
 		
 		"details" : details,
-		"state" : state
+		"state" : state,
+		"window_position" : window_position,
+		"screen_resolution" : screen_resolution,
 		
 	}
 	
@@ -91,13 +119,14 @@ func load_data():
 		
 		details = node_data["details"]
 		state = node_data["state"]
-	
+		window_position = str_to_var("Vector2i" + node_data["window_position"])
+		screen_resolution = str_to_var("Vector2i" + node_data["screen_resolution"])
+		
 		print(node_data)
 
 
 func _on_close_button_pressed() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-	get_tree().quit()
 
 
 func _on_minimize_button_pressed() -> void:
@@ -109,9 +138,25 @@ func _on_box_bar_gui_input(event: InputEvent) -> void:
 		if !moving:
 			mouse_start = get_viewport().get_mouse_position()
 		moving = event.is_pressed()
+		
 
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		load_data()
+		window_position = get_window().position
+		screen_resolution = get_window().size
+		save_data()
+		get_tree().quit()
 
 func _process(_delta: float) -> void:
 	if moving:
 		var current_mouse := Vector2i(get_viewport().get_mouse_position())
 		get_window().position += current_mouse - mouse_start
+
+
+func _on_detail_edit_text_submitted(_new_text: String) -> void:
+	enter_button()
+
+
+func _on_state_edit_text_submitted(_new_text: String) -> void:
+	enter_button()
