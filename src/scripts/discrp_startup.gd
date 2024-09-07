@@ -5,6 +5,7 @@ var state : String
 var details_changed : bool
 var state_changed : bool
 var window_position : Vector2i
+var screen_resolution : Vector2i
 
 var moving : bool = false
 var mouse_start : Vector2i
@@ -16,7 +17,6 @@ var mouse_start : Vector2i
 @onready var resolution_menu = $UI/VBoxContainer/PanelContainer2/HBoxContainer/MenuButton
 
 func _ready():
-	resolution_menu.get_popup().id_pressed.connect(_on_item_menu_pressed)
 	DiscordRPC.app_id = 1281484844404183071 # Application ID
 	DiscordRPC.large_image = "pencil"
 
@@ -30,22 +30,23 @@ func _ready():
 		DiscordRPC.state = state
 		detail_edit.text = details
 		state_edit.text = state
+		get_window().size = screen_resolution
 		get_window().position = window_position
 
 	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) # "02:46 elapsed"
 	# DiscordRPC.end_timestamp = int(Time.get_unix_time_from_system()) + 3600 # +1 hour in unix time / "01:00:00 remaining"
-
+	resolution_menu.get_popup().id_pressed.connect(_on_item_menu_pressed)
 	DiscordRPC.refresh() # Always refresh after changing the values!
 
 func _on_item_menu_pressed(id: int):
 	if id == 0:
 	# 480x360
 		get_window().size = Vector2i(480, 360)
-	
+
 	elif id == 1:
 	# 720x540
 		get_window().size = Vector2i(720, 540)
-	
+
 	elif id == 2:
 	# 960x720
 		get_window().size = Vector2i(960, 720)
@@ -85,7 +86,8 @@ func save() -> Dictionary:
 		
 		"details" : details,
 		"state" : state,
-		"window_position" : window_position
+		"window_position" : window_position,
+		"screen_resolution" : screen_resolution,
 		
 	}
 	
@@ -118,7 +120,8 @@ func load_data():
 		details = node_data["details"]
 		state = node_data["state"]
 		window_position = str_to_var("Vector2i" + node_data["window_position"])
-	
+		screen_resolution = str_to_var("Vector2i" + node_data["screen_resolution"])
+		
 		print(node_data)
 
 
@@ -141,6 +144,7 @@ func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		load_data()
 		window_position = get_window().position
+		screen_resolution = get_window().size
 		save_data()
 		get_tree().quit()
 

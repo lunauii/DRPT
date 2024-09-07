@@ -29,7 +29,7 @@ DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 [display]
 
 window/size/viewport_width=480
-window/size/viewport_height=320
+window/size/viewport_height=360
 window/size/borderless=true
 
 [editor_plugins]
