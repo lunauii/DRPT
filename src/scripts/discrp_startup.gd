@@ -9,9 +9,9 @@ var moving : bool = false
 var mouse_start : Vector2i
 
 @onready var ui = $UI
-@onready var change_box = $UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer2/ChangeBox
-@onready var detail_edit = $UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DetailsBox/DetailEdit
-@onready var state_edit = $UI/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/StateBox/StateEdit
+@onready var change_box = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Manual Override/MarginContainer/VBoxContainer2/ChangeBox"
+@onready var detail_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Manual Override/MarginContainer/VBoxContainer/DetailsBox/DetailEdit"
+@onready var state_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Manual Override/MarginContainer/VBoxContainer/StateBox/StateEdit"
 
 func _ready():
 	DiscordRPC.app_id = 1281484844404183071 # Application ID
@@ -19,12 +19,13 @@ func _ready():
 	DiscordRPC.large_image_text = ":3"
 	#DiscordRPC.small_image = "boss" # Image key from "Art Assets"
 	#DiscordRPC.small_image_text = "Fighting the end boss! D:"
-	
+
+	load_data()
+
 	if not FileAccess.file_exists("user://prev_params.cfg"):
 		DiscordRPC.details = "Studying"
 		DiscordRPC.state = "Textbook Chapter 1"
 	else:
-		load_data()
 		DiscordRPC.details = details
 		DiscordRPC.state = state
 		detail_edit.text = details
