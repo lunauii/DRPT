@@ -69,6 +69,17 @@ layout_mode = 2
 size_flags_horizontal = 2
 text = "DPRT"
 
+[node name="MenuButton" type="MenuButton" parent="UI/VBoxContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "[ Resolution ]"
+item_count = 3
+popup/item_0/text = "480x360 [Default]"
+popup/item_1/text = "720x540 [1.5x]"
+popup/item_1/id = 1
+popup/item_2/text = "960x720 [2x]"
+popup/item_2/id = 2
+
 [node name="MinimizeButton" type="Button" parent="UI/VBoxContainer/PanelContainer2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8

@@ -13,8 +13,10 @@ var mouse_start : Vector2i
 @onready var change_box = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer2/ChangeBox"
 @onready var detail_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/DetailsBox/DetailEdit"
 @onready var state_edit = $"UI/VBoxContainer/PanelContainer/MarginContainer/TabContainer/Defaults/MarginContainer/VBoxContainer/StateBox/StateEdit"
+@onready var resolution_menu = $UI/VBoxContainer/PanelContainer2/HBoxContainer/MenuButton
 
 func _ready():
+	resolution_menu.get_popup().id_pressed.connect(_on_item_menu_pressed)
 	DiscordRPC.app_id = 1281484844404183071 # Application ID
 	DiscordRPC.large_image = "pencil"
 
@@ -34,6 +36,20 @@ func _ready():
 	# DiscordRPC.end_timestamp = int(Time.get_unix_time_from_system()) + 3600 # +1 hour in unix time / "01:00:00 remaining"
 
 	DiscordRPC.refresh() # Always refresh after changing the values!
+
+func _on_item_menu_pressed(id: int):
+	if id == 0:
+	# 480x360
+		get_window().size = Vector2i(480, 360)
+	
+	elif id == 1:
+	# 720x540
+		get_window().size = Vector2i(720, 540)
+	
+	elif id == 2:
+	# 960x720
+		get_window().size = Vector2i(960, 720)
+	
 
 func _on_details_edit_text_changed(new_details: String) -> void:
 	details = new_details
